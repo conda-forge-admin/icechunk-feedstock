@@ -43,7 +43,7 @@ test:
     - icechunk  # [not aarch64]
   commands:
     - pip check  # [not aarch64]
-    - abi3audit $SP_DIR/_icechunk_python.abi3.so -s -v --assume-minimum-abi3 {{ python_min }}   # [unix and is_abi3]
+    - abi3audit $SP_DIR/icechunk/_icechunk_python.abi3.so -s -v --assume-minimum-abi3 {{ python_min }}   # [unix and is_abi3]
     # - icechunk --help  # uncomment when return code normalizes
   requires:
     - pip  # [not aarch64]
