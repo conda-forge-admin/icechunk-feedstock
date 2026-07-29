@@ -11,12 +11,13 @@ source:
   sha256: 3bb8ccb9e17dbd98c9f9955e657af85cbfc3da8787652b9bc18ba547580e6f61
 
 build:
-  skip: true  # [py<312 or python_impl == 'pypy']
+  number: 1
+  python_version_independent: true  # [is_abi3]
   script:
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
     - cd icechunk-python
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 0
+  skip: true  # [is_abi3 and not is_python_min]
 
 requirements:
   build:
@@ -28,6 +29,7 @@ requirements:
     - {{ compiler("rust") }}
     - cargo-bundle-licenses
   host:
+    - python-abi3  # [is_abi3]
     - python
     - maturin >=1.7,<2.0
     - pip
@@ -40,9 +42,11 @@ test:
     - icechunk  # [not aarch64]
   commands:
     - pip check  # [not aarch64]
+    - abi3audit $SP_DIR/_icechunk_python.abi3.so -s -v --assume-minimum-abi3 {{ python_min }}   # [unix and is_abi3]
     # - icechunk --help  # uncomment when return code normalizes
   requires:
     - pip  # [not aarch64]
+    - abi3audit  # [is_abi3]
 
 about:
   home: https://github.com/earth-mover/icechunk
