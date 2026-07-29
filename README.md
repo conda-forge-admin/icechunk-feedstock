@@ -13,7 +13,14 @@ Current build status
 ====================
 
 
-<table>
+<table><tr>
+    <td>GitHub Actions</td>
+    <td>
+      <a href="https://github.com/conda-forge/icechunk-feedstock/actions/workflows/conda-build.yml">
+        <img src="https://github.com/conda-forge/icechunk-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
+      </a>
+    </td>
+  </tr>
     
   <tr>
     <td>Azure</td>
@@ -52,13 +59,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=24765&branchName=main">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/icechunk-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_is_python_mintrue" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_64_is_python_mintrue</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=24765&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/icechunk-feedstock?branchName=main&jobName=win&configuration=win%20win_64_is_python_mintrue" alt="variant">
                 </a>
               </td>
             </tr>
