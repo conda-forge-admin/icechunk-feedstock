@@ -31,11 +31,11 @@ requirements:
     - cargo-bundle-licenses
   host:
     - python-abi3  # [is_abi3]
-    - python
+    - python >={{ python_min }}
     - maturin >=1.7,<2.0
     - pip
   run:
-    - python
+    - python >={{ python_min }}
     - zarr >=3.1  # [not aarch64]
 
 test:
