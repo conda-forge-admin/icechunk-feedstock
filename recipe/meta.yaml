@@ -1,5 +1,6 @@
 {% set name = "icechunk" %}
 {% set version = "2.1.2" %}
+{% set python_min = "3.12" %}
 
 
 package:
@@ -11,28 +12,33 @@ source:
   sha256: 3bb8ccb9e17dbd98c9f9955e657af85cbfc3da8787652b9bc18ba547580e6f61
 
 build:
-  skip: true  # [py<312 or python_impl == 'pypy']
+  number: 1
+  entry_points:
+    - icechunk = icechunk._icechunk_python:cli_entrypoint
+  python_version_independent: true  # [is_abi3]
   script:
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
     - cd icechunk-python
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 0
+  skip: true  # [is_abi3 and not is_python_min]
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - python {{ python_min }}.*                              # [build_platform != target_platform]
+    - cross-python_{{ target_platform }} {{ python_min }}.*  # [build_platform != target_platform]
+    - crossenv                               # [build_platform != target_platform]
     - maturin >=1.7.0,<2.0                   # [build_platform != target_platform]
     - {{ stdlib("c") }}
     - {{ compiler("c") }}
     - {{ compiler("rust") }}
     - cargo-bundle-licenses
   host:
-    - python
+    - python-abi3  # [is_abi3]
+    - python {{ python_min }}.*
     - maturin >=1.7,<2.0
     - pip
   run:
-    - python
+    - python >={{ python_min }}
     - zarr >=3.1  # [not aarch64]
 
 test:
@@ -40,9 +46,12 @@ test:
     - icechunk  # [not aarch64]
   commands:
     - pip check  # [not aarch64]
+    - abi3audit $SP_DIR/icechunk/_icechunk_python.abi3.so -s -v --assume-minimum-abi3 {{ python_min }}   # [unix and is_abi3]
+    - abi3audit %SP_DIR%/icechunk/_icechunk_python.pyd -s -v --assume-minimum-abi3 {{ python_min }}   # [win and is_abi3]
     # - icechunk --help  # uncomment when return code normalizes
   requires:
     - pip  # [not aarch64]
+    - abi3audit  # [is_abi3]
 
 about:
   home: https://github.com/earth-mover/icechunk
