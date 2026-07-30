@@ -15,59 +15,41 @@ requires-pixi = ">=0.59.0"
 [dependencies]
 conda-build = ">=26.3"
 conda-forge-ci-setup = "4.*"
-python = "3.12.*"
+rattler-build = "*"
 
 [tasks.inspect-all]
 cmd = "inspect_artifacts --all-packages"
-description = "List contents of all packages found in conda-build build directory."
+description = "List contents of all packages found in rattler-build build directory."
 [tasks.build]
-cmd = "conda-build build recipe"
+cmd = "rattler-build build --recipe recipe"
 description = "Build icechunk-feedstock directly (without setup scripts), no particular variant specified"
-[tasks.debug]
-cmd = "conda-build debug recipe"
-description = "Debug icechunk-feedstock directly (without setup scripts), no particular variant specified"
 [tasks."build-linux_64_is_python_mintrue"]
-cmd = "conda-build build recipe -m .ci_support/linux_64_is_python_mintrue.yaml --suppress-variables --clobber-file .ci_support/clobber_linux_64_is_python_mintrue.yaml"
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_64_is_python_mintrue.yaml"
 description = "Build icechunk-feedstock with variant linux_64_is_python_mintrue directly (without setup scripts)"
-[tasks."debug-linux_64_is_python_mintrue"]
-cmd = "conda-build debug recipe -m .ci_support/linux_64_is_python_mintrue.yaml"
-description = "Debug icechunk-feedstock with variant linux_64_is_python_mintrue directly (without setup scripts)"
 [tasks."inspect-linux_64_is_python_mintrue"]
 cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_64_is_python_mintrue.yaml"
 description = "List contents of icechunk-feedstock packages built for variant linux_64_is_python_mintrue"
 [tasks."build-linux_aarch64_is_python_mintrue"]
-cmd = "conda-build build recipe -m .ci_support/linux_aarch64_is_python_mintrue.yaml --suppress-variables --clobber-file .ci_support/clobber_linux_aarch64_is_python_mintrue.yaml"
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_aarch64_is_python_mintrue.yaml"
 description = "Build icechunk-feedstock with variant linux_aarch64_is_python_mintrue directly (without setup scripts)"
-[tasks."debug-linux_aarch64_is_python_mintrue"]
-cmd = "conda-build debug recipe -m .ci_support/linux_aarch64_is_python_mintrue.yaml"
-description = "Debug icechunk-feedstock with variant linux_aarch64_is_python_mintrue directly (without setup scripts)"
 [tasks."inspect-linux_aarch64_is_python_mintrue"]
 cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_aarch64_is_python_mintrue.yaml"
 description = "List contents of icechunk-feedstock packages built for variant linux_aarch64_is_python_mintrue"
 [tasks."build-osx_64_is_python_mintrue"]
-cmd = "conda-build build recipe -m .ci_support/osx_64_is_python_mintrue.yaml --suppress-variables --clobber-file .ci_support/clobber_osx_64_is_python_mintrue.yaml"
+cmd = "rattler-build build --recipe recipe -m .ci_support/osx_64_is_python_mintrue.yaml"
 description = "Build icechunk-feedstock with variant osx_64_is_python_mintrue directly (without setup scripts)"
-[tasks."debug-osx_64_is_python_mintrue"]
-cmd = "conda-build debug recipe -m .ci_support/osx_64_is_python_mintrue.yaml"
-description = "Debug icechunk-feedstock with variant osx_64_is_python_mintrue directly (without setup scripts)"
 [tasks."inspect-osx_64_is_python_mintrue"]
 cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/osx_64_is_python_mintrue.yaml"
 description = "List contents of icechunk-feedstock packages built for variant osx_64_is_python_mintrue"
 [tasks."build-osx_arm64_is_python_mintrue"]
-cmd = "conda-build build recipe -m .ci_support/osx_arm64_is_python_mintrue.yaml --suppress-variables --clobber-file .ci_support/clobber_osx_arm64_is_python_mintrue.yaml"
+cmd = "rattler-build build --recipe recipe -m .ci_support/osx_arm64_is_python_mintrue.yaml"
 description = "Build icechunk-feedstock with variant osx_arm64_is_python_mintrue directly (without setup scripts)"
-[tasks."debug-osx_arm64_is_python_mintrue"]
-cmd = "conda-build debug recipe -m .ci_support/osx_arm64_is_python_mintrue.yaml"
-description = "Debug icechunk-feedstock with variant osx_arm64_is_python_mintrue directly (without setup scripts)"
 [tasks."inspect-osx_arm64_is_python_mintrue"]
 cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/osx_arm64_is_python_mintrue.yaml"
 description = "List contents of icechunk-feedstock packages built for variant osx_arm64_is_python_mintrue"
 [tasks."build-win_64_is_python_mintrue"]
-cmd = "conda-build build recipe -m .ci_support/win_64_is_python_mintrue.yaml --suppress-variables --clobber-file .ci_support/clobber_win_64_is_python_mintrue.yaml"
+cmd = "rattler-build build --recipe recipe -m .ci_support/win_64_is_python_mintrue.yaml"
 description = "Build icechunk-feedstock with variant win_64_is_python_mintrue directly (without setup scripts)"
-[tasks."debug-win_64_is_python_mintrue"]
-cmd = "conda-build debug recipe -m .ci_support/win_64_is_python_mintrue.yaml"
-description = "Debug icechunk-feedstock with variant win_64_is_python_mintrue directly (without setup scripts)"
 [tasks."inspect-win_64_is_python_mintrue"]
 cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/win_64_is_python_mintrue.yaml"
 description = "List contents of icechunk-feedstock packages built for variant win_64_is_python_mintrue"
