@@ -1,0 +1,91 @@
+schema_version: 1
+
+context:
+  name: icechunk
+  version: "2.1.2"
+  python_min: "3.12"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/earth-mover/icechunk/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: 3bb8ccb9e17dbd98c9f9955e657af85cbfc3da8787652b9bc18ba547580e6f61
+
+build:
+  number: 2
+  skip: is_abi3 and not is_python_min
+  script:
+    - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+    - cd icechunk-python
+    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  python:
+    entry_points:
+      - icechunk = icechunk._icechunk_python:cli_entrypoint
+    version_independent: ${{ true if is_abi3 }}
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python ${{ python_min }}.*
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }} ${{ python_min }}.*
+    - if: build_platform != target_platform
+      then: crossenv
+    - if: build_platform != target_platform
+      then: maturin >=1.7.0,<2.0
+    - ${{ stdlib("c") }}
+    - ${{ compiler("c") }}
+    - ${{ compiler("rust") }}
+    - cargo-bundle-licenses
+  host:
+    - if: is_abi3
+      then: python-abi3
+    - python ${{ python_min }}.*
+    - maturin >=1.7,<2.0
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - if: not aarch64
+      then: zarr >=3.1
+
+tests:
+  - python:
+      imports:
+        - if: not aarch64
+          then: icechunk
+      pip_check: false
+  - requirements:
+      run:
+        - if: not aarch64
+          then: pip
+        - if: is_abi3
+          then: abi3audit
+    script:
+      - if: not aarch64
+        then: pip check
+      - if: unix and is_abi3
+        then: abi3audit $SP_DIR/icechunk/_icechunk_python.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
+      - if: win and is_abi3
+        then: abi3audit %SP_DIR%/icechunk/_icechunk_python.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
+
+about:
+  summary: Transactional storage engine for Zarr designed for use on cloud object storage
+  license: Apache-2.0
+  license_file:
+    - LICENSE
+    - THIRDPARTY.yml
+  homepage: https://github.com/earth-mover/icechunk
+
+extra:
+  recipe-maintainers:
+    - ianhi
+    - li-em
+    - TomNicholas
+    - andersy005
+    - dcherian
+    - jhamman
+    - mpiannucci
+    - paraseba
+    - rabernat
