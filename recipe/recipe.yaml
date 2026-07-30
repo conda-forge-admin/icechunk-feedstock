@@ -4,22 +4,26 @@ context:
   name: icechunk
   version: "2.1.2"
   python_min: "3.12"
+  sha256: 762daf1ece116903b25c66555bc07bf9756de26f2e7d0cdbdb6d69530aa35f82
 
 package:
   name: ${{ name|lower }}
   version: ${{ version }}
 
 source:
-  url: https://github.com/earth-mover/icechunk/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 3bb8ccb9e17dbd98c9f9955e657af85cbfc3da8787652b9bc18ba547580e6f61
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name|lower }}-${{ version }}.tar.gz
+  sha256: ${{ sha256 }}
 
 build:
   number: 2
   skip: is_abi3 and not is_python_min
   script:
-    - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-    - cd icechunk-python
-    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
+    content:
+      - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+      - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   python:
     entry_points:
       - icechunk = icechunk._icechunk_python:cli_entrypoint
